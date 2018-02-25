@@ -1,0 +1,19 @@
+Dragonboard
+https://developer.qualcomm.com/hardware/dragonboard-410c
+https://github.com/96boards/Sensor_Mezzanine_Getting_Started/blob/master/README.md
+
+Bluetooth
+https://stackoverflow.com/questions/24629540/change-bluetooth-from-master-to-slave-using-bluez-library
+https://raspberrypi.stackexchange.com/questions/14598/making-raspberry-pi-bluetooth-slave
+https://unix.stackexchange.com/questions/92255/how-do-i-connect-and-send-data-to-a-bluetooth-serial-port-on-linux
+http://dotnet.work/2016/02/detecting-smartphone-via-bluetooth-on-linux-raspberry-pi-2/
+https://www.raspberrypi.org/forums/viewtopic.php?t=47466
+
+Twilio
+https://www.twilio.com/console/sms/getting-started/overview/setup
+
+Google API
+https://developers.google.com/maps/documentation/geolocation/intro
+
+Devpost
+https://devpost.com/software/atsm
