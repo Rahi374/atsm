@@ -1,0 +1,25 @@
+#!/bin/bash
+
+echo "atsm: setting up" >> /tmp/log.log
+
+gpio_dir=/sys/class/gpio
+
+# GPIO 36 -> pin 23 -> GPIO A - none
+# GPIO 24 -> pin 29 -> GPIO G - button - light sensor
+# GPIO 35 -> pin 31 -> GPIO I - light sensor
+# GPIO 28 -> pin 33 -> GPIO K - buzzer
+
+# Initialize GPIO pins
+#echo 36 > $gpio_dir/export
+echo 24 > $gpio_dir/export
+echo 35 > $gpio_dir/export
+echo 28 > $gpio_dir/export
+
+# Set GPIO directions
+#echo out > $gpio_dir/gpio36/direction
+echo in  > $gpio_dir/gpio24/direction
+echo in  > $gpio_dir/gpio35/direction
+echo out > $gpio_dir/gpio28/direction
+
+# Reset buzzer
+echo 0 > $gpio_dir/gpio28/value

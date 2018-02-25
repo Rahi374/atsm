@@ -1,0 +1,1 @@
+watch -n 0.5 hcitool tpl B8:27:EB:75:27:1B 0

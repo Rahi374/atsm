@@ -1,0 +1,12 @@
+#!/bin/bash
+led_dir=/sys/class/leds/led0
+echo none > $led_dir/trigger
+echo 1 > $led_dir/brightness
+
+sdptool add --channel=22 SP
+hciconfig hci0 sspmode 1
+hciconfig hci0 piscan
+rfcomm listen /dev/rfcomm0 22
+
+sleep 2
+echo 0 > $led_dir/brightness

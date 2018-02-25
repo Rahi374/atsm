@@ -1,0 +1,54 @@
+#!/usr/bin/ruby
+
+require "json"
+
+api_key = "YOUR_GOOGLE_GEOLOCATION_API_KEY_HERE"
+
+iwlist = `iwconfig 2> /dev/null`.split
+
+i = iwlist.index("Point:")
+macaddr = iwlist[i+1]
+
+i = iwlist.index("Signal")
+sigstrength = iwlist[i+1].split("level=").last
+
+obj = Hash.new
+
+obj["considerIp"] = "true"
+obj["wifiAccessPoints"] = [{
+	"macAddress" => macaddr,
+	"signalStrngth" => sigstrength,
+	"signalToNoiseRatio" => 0
+}]
+
+File.write("/tmp/json_obj", obj.to_json)
+
+curl_cmd = "curl -s -d @/tmp/json_obj -H 'Content-Type: application/json' -i 'https://www.googleapis.com/geolocation/v1/geolocate?key=#{api_key}'"
+
+res = `#{curl_cmd}`
+
+json_res = JSON.parse res.split("\r\n\r\n").last
+
+lat = json_res["location"]["lat"].to_s
+lng = json_res["location"]["lng"].to_s
+
+msg=""
+if ARGV[0] == "rem"
+	msg = "Your item has been removed from your luggage at "
+elsif ARGV[0] == "ret"
+	msg = "Your item has been returned to your luggage at "
+end
+
+puts "#{msg} http://maps.google.com/maps?q=#{lat},#{lng}"
+
+
+#{
+#  "considerIp": "true",
+#  "wifiAccessPoints": [
+#    {
+#        "macAddress": "F4:1F:C2:8A:47:15",
+#        "signalStrength": -52,
+#        "signalToNoiseRatio": 0
+#    }
+#  ]
+#}

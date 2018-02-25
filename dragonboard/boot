@@ -1,0 +1,15 @@
+#!/bin/bash
+
+wd=/home/linaro/atsm
+
+while ! ping -w 1 -c 1 8.8.8.8 &> /dev/null ; do
+	sleep 5
+done
+
+touch /tmp/asdfasdf
+echo $(date) >> /tmp/log.log
+
+echo "atsm: running setup" >> /tmp/log.log
+$wd/setup
+echo "atsm: running reset listener" >> /tmp/log.log
+$wd/reset

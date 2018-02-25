@@ -1,0 +1,41 @@
+#!/bin/bash
+
+phone_number=4125370115
+
+buzzer_pin=28
+gpio_dir=/sys/class/gpio
+wd=/home/linaro/atsm
+
+interval=0.5
+last_state=off
+
+echo "atsm: listening" >> /tmp/log.log
+
+while true; do
+	tpl=$(hcitool tpl B8:27:EB:75:27:1B 0 | awk '{ print $5 }')
+	echo "atsm: tpl = $tpl" >> /tmp/log.log
+	if [[ $tpl -lt 10 ]]; then
+		echo "atsm: tpl < 10" >> /tmp/log.log
+		# Turn off buzzer
+		echo 0 > $gpio_dir/gpio$buzzer_pin/value
+		echo "atsm: last_state=$last_state" >> /tmp/log.log
+		if [[ $last_state = on ]]; then
+			echo "atsm: sending returned message" >> /tmp/log.log
+			# Send message returned
+			$wd/send $phone_number "$($wd/get_coords ret)" &
+			last_state=off
+		fi
+	else # tpl >= 10
+		echo "atsm: tpl >= 10" >> /tmp/log.log
+		# Turn on buzzer
+		echo 1 > $gpio_dir/gpio$buzzer_pin/value
+		echo "atsm: last_state=$last_state" >> /tmp/log.log
+		if [[ $last_state = off ]]; then
+			echo "atsm: sending removed message" >> /tmp/log.log
+			# Send message removed
+			$wd/send $phone_number "$($wd/get_coords rem)" &
+			last_state=on
+		fi
+	fi
+	sleep $interval
+done

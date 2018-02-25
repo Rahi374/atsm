@@ -1,0 +1,43 @@
+#!/bin/bash
+
+reset_pin=24
+buzzer_pin=28
+gpio_dir=/sys/class/gpio
+wd=/home/linaro/atsm
+
+# Beep a little
+echo 1 > $gpio_dir/gpio$buzzer_pin/value
+sleep 0.1
+echo 0 > $gpio_dir/gpio$buzzer_pin/value
+sleep 0.1
+echo 1 > $gpio_dir/gpio$buzzer_pin/value
+sleep 0.1
+echo 0 > $gpio_dir/gpio$buzzer_pin/value
+
+while true; do
+	if [[ $(cat $gpio_dir/gpio$reset_pin/value) == 0 ]]; then
+		echo "atsm: resetting" >> /tmp/log.log
+
+		# Kill rfcomm and old listen
+		$wd/kill
+
+		# Turn off buzzer
+		echo 0 > $gpio_dir/gpio$buzzer_pin/value
+
+		# Reconnect BT
+		$wd/connect
+
+		# Beep a little
+		echo 1 > $gpio_dir/gpio$buzzer_pin/value
+		sleep 0.1
+		echo 0 > $gpio_dir/gpio$buzzer_pin/value
+		sleep 0.1
+		echo 1 > $gpio_dir/gpio$buzzer_pin/value
+		sleep 0.1
+		echo 0 > $gpio_dir/gpio$buzzer_pin/value
+
+		# Restart listen
+		$wd/listen &
+	fi
+	sleep 1
+done

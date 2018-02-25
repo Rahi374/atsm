@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "atsm: killing" >> /tmp/log.log
+ps aux | grep listen | awk '{ print $2 }' | xargs kill
+ps aux | grep rfcomm | grep connect | awk '{ print $2 }' | xargs kill
