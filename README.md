@@ -14,7 +14,7 @@ RSSI was supposed to be used to measure Bluetooth signal strength; it was contin
 
 The Dragonboard's built-in GPS was too weak or the firmware wasn't operational, and there was no USB GPS module. For this reason, the GPS coordinates rae obtained from Google's geolocation API, and the text messages are sent through WiFi (just for this hack).
 
-For some reason, the Grove button and touch sensor both were stuck sending a high voltage, so I had to use a light sensor as a substitute "reset" switch.
+For some reason, both the Grove button and touch sensor both were stuck sending a high voltage, so I had to use a light sensor as a substitute "reset" switch.
 
 ## Accomplishments that I'm proud of
 Actually getting the whole thing to work!
@@ -44,6 +44,9 @@ fi
 - This runs the script at boot, but after userspace has been completely loaded
 
 ### Dragonboard
+- Requiers mezzanine shield
 - Add `/home/linaro/atsm/boot` to `/etc/rc.local`
 - Of course, don't forget the api key in file `get_coords`
 - Ruby is required
+- Buzzer in GPIO port K
+- button/touch/light sensor in GPIO port G
